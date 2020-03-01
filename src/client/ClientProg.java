@@ -17,8 +17,8 @@ import java.net.Socket;
  * mais est bien sur susceptible de (nombreuses) améliorations
  */
 class ClientProg {
-		private final static int PORT_SERVICE = 2000;
-		private final static String HOST = "localhost"; 
+	private final static int PORT_SERVICE = 2000;
+	private final static String HOST = "localhost"; 
 	
 	public static void main(String[] args) {
 		Socket s = null;		
