@@ -13,6 +13,7 @@ public class ServiceInversion implements Service {
 	public ServiceInversion(Socket socket) {
 		client = socket;
 	}
+	
 @Override
 	public void run() {
 		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));

@@ -17,7 +17,6 @@ public class BRiLaunch {
 	
 	private final static int PORT_AMA = 3000;
 	private final static int PORT_PROG = 2000;
-	private final static int PORT_CONNEXION = 4000;
 	
 	public static void main(String[] args) throws MalformedURLException {
 		// URLClassLoader sur ftp
@@ -31,7 +30,6 @@ public class BRiLaunch {
 		System.out.println("Les clients se connectent au serveur 3000 pour lancer une activité");
 		System.out.println("Les programmeurs se connectent au serveur 2000 pour lancer une activité");
 		
-		new Thread(new ServeurBRi(PORT_CONNEXION)).start();
 		new Thread(new ServeurBRi(PORT_AMA)).start();
 		new Thread(new ServeurBRi(PORT_PROG)).start();
 		
