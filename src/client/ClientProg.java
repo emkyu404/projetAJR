@@ -51,7 +51,7 @@ class ClientProg {
             if(values.get(0).equals(login) && values.get(1).equals(password)) {
             	if(key.equals("programmeur")) {
             		exists = true;
-            		ProgLauncher();
+            		ProgLauncher(login);
             	}
             }
         }	
@@ -61,7 +61,7 @@ class ClientProg {
 		}		
 	}
 	
-	public static void ProgLauncher() {
+	public static void ProgLauncher(String login) {
 		Socket s = null;		
 		try {
 			s = new Socket(HOST, PORT_SERVICE);
@@ -70,9 +70,10 @@ class ClientProg {
 			BufferedReader sin = new BufferedReader (new InputStreamReader(s.getInputStream ( )));
 			PrintWriter sout = new PrintWriter (s.getOutputStream ( ), true);			
 		
-			System.out.println("Connecté au serveur " + s.getInetAddress() + ":"+ s.getPort());
+			System.out.println("Connecté au serveur " + s.getInetAddress() + ":"+ s.getPort());	
 			
 			String line;
+			sout.println(login);
 		// menu et choix du service
 			line = sin.readLine();
 			System.out.println(line.replaceAll("##", "\n"));

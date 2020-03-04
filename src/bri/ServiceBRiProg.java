@@ -9,6 +9,7 @@ import java.net.*;
 class ServiceBRiProg implements Runnable {
 	
 	private Socket client;
+	private String log;
 	
 	ServiceBRiProg(Socket socket) {
 		client = socket;
@@ -17,14 +18,16 @@ class ServiceBRiProg implements Runnable {
 	public void run() {
 		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 			PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
-			out.println(ServiceRegistry.toStringueProg()+"##Tapez le numéro de service désiré :");
+			log = in.readLine();
+			out.println(ServiceRegistry.toStringueProg()+"##"+log+", Tapez le numéro de service désiré :");
 			int choix = Integer.parseInt(in.readLine());
 			
 			// instancier le service numéro "choix" en lui passant la socket "client"
 			// invoquer run() pour cette instance ou la lancer dans un thread à part 
 			try {
-				//((Service) ServiceRegistry.getServicesClassesProg(choix).getConstructor(Socket.class).newInstance(client)).run();
-				Class<?> serviceClass = ServiceRegistry.getServicesClassesProg(choix);
+				((Service) ServiceRegistry.getServicesClassesProg(choix).getConstructor(Socket.class).newInstance(client)).run();
+				//Class<?> serviceClass = ServiceRegistry.getServicesClassesProg(choix);
+				
 				
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
