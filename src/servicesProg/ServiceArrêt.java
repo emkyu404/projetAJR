@@ -1,6 +1,7 @@
 package servicesProg;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -20,7 +21,22 @@ public class ServiceArrêt implements Service {
 	
 	@Override
 	public void run() {
-		
+		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
+		PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
+		out.println(ServiceRegistry.toStringue()+"##Indiquez le numéro du service à arrêter");
+			try {
+				int numService = Integer.parseInt(in.readLine());
+				Class<?> serviceToStop = ServiceRegistry.getServiceClass(numService);
+				ServiceRegistry.stopService(serviceToStop);;
+				String classeName = serviceToStop.getSimpleName();
+				out.println("Service '"+classeName+"' a été arrêté avec succès");
+			} catch (Exception e) {
+				out.println("Erreur : Le service indiqué n'existe pas. Vérifiez que le nom ne comporte aucune erreur.");
+			}
+		} catch (IOException e) {
+		//Fin du service
+		}
+		try {client.close();} catch (IOException e2) {}
 	}
 
 }

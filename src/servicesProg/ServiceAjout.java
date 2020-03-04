@@ -14,9 +14,11 @@ import bri.ServiceRegistry;
 public class ServiceAjout implements Service {
 
 	private Socket client;
+	private String log;
 	
-	public ServiceAjout(Socket socket) {
+	public ServiceAjout(Socket socket, String progLogin) {
 		client = socket;
+		log = progLogin;
 	}
 	
 	@Override
@@ -32,7 +34,7 @@ public class ServiceAjout implements Service {
 				try {
 					String classeName = in.readLine();
 					Class<?> newService = urlcl.loadClass(classeName);
-					ServiceRegistry.addService(newService);
+					ServiceRegistry.addService(newService, log);
 					out.println("Service '"+classeName+"' a été ajouté avec succès");
 				} catch (Exception e) {
 					out.println("Erreur : Le service indiqué n'existe pas. Vérifiez que le nom ne comporte aucune erreur.");

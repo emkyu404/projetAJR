@@ -16,7 +16,8 @@ public class ServiceRegistry {
 	// un Vector pour cette gestion est pratique
 
 	static {
-		servicesAmaClasses = new Vector<Class<?>>();
+		servicesAmaClassesStarted = new Vector<Class<?>>();
+		servicesAmaClassesStopped = new Vector<Class<?>>();
 		servicesProgClasses = new Vector<Class<?>>(); 
 		try{
 			initializeProgServices();
@@ -24,13 +25,17 @@ public class ServiceRegistry {
 			
 		}
 	}
-	private static List<Class<?>> servicesAmaClasses;
+	
+	private static String serverFTPURL;
+	private static List<Class<?>> servicesAmaClassesStarted;
+	private static List<Class<?>> servicesAmaClassesStopped;
 	private static List<Class<?>> servicesProgClasses;
 // ajoute une classe de service après contrôle de la norme BLTi
-	public static void addService(Class<?> newService) throws AddServiceException {
+	public static void addService(Class<?> newService, String loginProg) throws AddServiceException {
 	
 		int modifier = newService.getModifiers();
 		Class<?>[] interfaces = newService.getInterfaces();
+		if(checkServPackage(loginProg, newService.getPackageName()))
 		
 		if(!checkInterface(interfaces)) throw new AddServiceException("Le service n'implemente pas la classe ServiceBRi");
 		
@@ -44,23 +49,66 @@ public class ServiceRegistry {
 		
 		if(!hasToString(newService)) throw new AddServiceException("Le service n'a pas de méthode 'public static String ToStringue()'");
 		
-		servicesAmaClasses.add(newService);
+		servicesAmaClassesStarted.add(newService);
 	}
 	
+	
 	public static void removeService(Class<?> serviceToRemove){
-		servicesAmaClasses.remove(serviceToRemove);
+		servicesAmaClassesStopped.remove(serviceToRemove);	
 	}
+	
+	public static void stopService(Class<?> serviceToStop) {
+		servicesAmaClassesStarted.remove(serviceToStop);
+		servicesAmaClassesStopped.add(serviceToStop);
+	}
+	
+	public static void startService(Class<?> serviceToStart) {
+		servicesAmaClassesStopped.remove(serviceToStart);
+		servicesAmaClassesStarted.add(serviceToStart);
+	}
+	
+	public static void updateService(Class<?>updatedService) {
+		/* on recherche dans la liste des services arrêté, la class qui a le même nom que le service mis à jour */
+		for(Class<?> service : servicesAmaClassesStopped) {
+			if(service.getSimpleName().equals(updatedService.getSimpleName())){
+				servicesAmaClassesStopped.remove(service);
+				servicesAmaClassesStopped.add(updatedService);
+				return;
+			}
+		}
+	}
+	
 	
 // renvoie la classe de service (numService -1)	
 	public static Class<?> getServiceClass(int numService) {
-		return servicesAmaClasses.get(numService - 1);
+		return servicesAmaClassesStarted.get(numService - 1);
 	}
 	
-// liste les activités présentes
+	public static Class<?> getServiceStoppedClass(int numService){
+		return servicesAmaClassesStopped.get(numService - 1);
+	}
+	
+	/* booléen qui renvoit si aucun service n'a été ajouté */
+	public static boolean noServiceInstalled() {
+		return servicesAmaClassesStopped.size() == 0 && servicesAmaClassesStarted.size() == 0;
+	}
+	
+	
+	
+// liste les activités présentes ET démarrer
 	public static String toStringue() {
 		String result = "Activités présentes : ##";
 		int cpt = 1;
-		for(Class<?> c : servicesAmaClasses)
+		for(Class<?> c : servicesAmaClassesStarted)
+			result += cpt++ + ": "+ c.getSimpleName() + "##";
+		
+		return result;
+	}
+	
+	public static String toStringueStopped() {
+		String result = "Activités arrêtés présentes : ##";
+		int cpt = 1;
+		for(Class<?> c : servicesAmaClassesStopped)
 			result += cpt++ + ": "+ c.getSimpleName() + "##";
 		
 		return result;
@@ -77,6 +125,10 @@ public class ServiceRegistry {
 			}
 		}
 		return impServiceBri;
+	}
+	
+	private static boolean checkServPackage(String login, String packageName) {
+		return login.equals(packageName);
 	}
 	
 	private static boolean hasPublicConstructor(Class<?> classe) {
@@ -127,11 +179,11 @@ public class ServiceRegistry {
 	
 	private static void initializeProgServices() throws Exception {
 		servicesProgClasses.add(Class.forName("servicesProg.ServiceAjout"));
-		//servicesProg.add(Class.forName("servicesProg.ServiceArrêt"));
+		servicesProgClasses.add(Class.forName("servicesProg.ServiceArrêt"));
 		//servicesProg.add(Class.forName("servicesProg.ServiceChangementServeurFTP"));
-		//servicesProg.add(Class.forName("servicesProg.ServiceDémarrer"));
-		//servicesProg.add(Class.forName("servicesProg.ServiceDésinstaller"));
-		//servicesProg.add(Class.forName("servicesProg.ServiceMiseAJour"));
+		servicesProgClasses.add(Class.forName("servicesProg.ServiceDémarrer"));
+		servicesProgClasses.add(Class.forName("servicesProg.ServiceDésinstaller"));
+		servicesProgClasses.add(Class.forName("servicesProg.ServiceMiseAJour"));
 	}
 	
 	public static Class<?> getServicesClassesProg(int numService) {

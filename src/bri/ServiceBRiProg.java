@@ -23,7 +23,9 @@ class ServiceBRiProg implements Runnable {
 			// instancier le service numéro "choix" en lui passant la socket "client"
 			// invoquer run() pour cette instance ou la lancer dans un thread à part 
 			try {
-				((Service) ServiceRegistry.getServicesClassesProg(choix).getConstructor(Socket.class).newInstance(client)).run();
+				//((Service) ServiceRegistry.getServicesClassesProg(choix).getConstructor(Socket.class).newInstance(client)).run();
+				Class<?> serviceClass = ServiceRegistry.getServicesClassesProg(choix);
+				
 			} catch (InstantiationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
