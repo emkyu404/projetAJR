@@ -20,7 +20,7 @@ class ServiceBRiProg implements Runnable {
 			PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
 			log = in.readLine();	
 			while(true) {
-				out.println(ServiceRegistry.toStringueProg()+"##"+log+", Tapez le numéro de service désiré :");	
+				out.println(ServiceRegistry.toStringueProg()+"##********************************************************************##"+log+", Tapez le numéro de service désiré :");	
 				int choix = Integer.parseInt(in.readLine());
 				
 				// instancier le service numéro "choix" en lui passant la socket "client"

@@ -29,9 +29,13 @@ public class BRiLaunch {
 		System.out.println("Pour ajouter une activité, celle-ci doit être présente sur votre serveur ftp");
 		System.out.println("Les clients se connectent au serveur 3000 pour lancer une activité");
 		System.out.println("Les programmeurs se connectent au serveur 2000 pour lancer une activité");
-		
+		try {
 		new Thread(new ServeurBRi(PORT_AMA)).start();
 		new Thread(new ServeurBRi(PORT_PROG)).start();
+		}catch(Exception e) {
+			System.out.println("*************************************************************************");
+			System.out.println("Serveur déjà lancé");
+		}
 		
 	}
 	
