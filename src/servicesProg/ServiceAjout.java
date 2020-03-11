@@ -42,7 +42,7 @@ public class ServiceAjout implements Service {
 						out.println("Service '"+classeName+"' a été ajouté avec succès ##*************************************************************************##");
 					}
 				} catch (Exception e) {
-					out.println("Erreur : " + e.getMessage());
+					out.println("Erreur : " + e.toString());
 				}
 			} catch (IOException e) {
 				PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
