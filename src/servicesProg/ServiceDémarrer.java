@@ -13,7 +13,7 @@ public class ServiceDémarrer implements Service {
 	
 	private Socket client;
 	
-	public ServiceDémarrer(Socket sock) {
+	public ServiceDémarrer(Socket sock, String log) {
 		this.client = sock;
 	}
 	
@@ -22,13 +22,17 @@ public class ServiceDémarrer implements Service {
 	public void run() {
 		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 		PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
-		out.println(ServiceRegistry.toStringueStopped()+"##Indiquez le numéro du service à démarrer");
+		out.println(ServiceRegistry.toStringueStopped()+"##Indiquez le numéro du service à démarrer (0 pour annuler)");
 			try {
 				int numService = Integer.parseInt(in.readLine());
-				Class<?> serviceToStart = ServiceRegistry.getServiceStoppedClass(numService);
-				ServiceRegistry.startService(serviceToStart);;
-				String classeName = serviceToStart.getSimpleName();
-				out.println("Service '"+classeName+"' a été démarrer avec succès");
+				if(numService == 0) {
+					out.println("Annulation du service de démarrage. Retour à la sélection de service ##*************************************************************************##");
+				}else {
+					Class<?> serviceToStart = ServiceRegistry.getServiceStoppedClass(numService);
+					ServiceRegistry.startService(serviceToStart);;
+					String classeName = serviceToStart.getSimpleName();
+					out.println("Service '"+classeName+"' a été démarrer avec succès ##*************************************************************************##");
+				}
 			} catch (Exception e) {
 				out.println("Erreur : Le service indiqué n'existe pas. Vérifiez que le nom ne comporte aucune erreur.");
 			}
@@ -36,7 +40,6 @@ public class ServiceDémarrer implements Service {
 		//Fin du service
 		}
 
-		try {client.close();} catch (IOException e2) {}
 	}
 
 }

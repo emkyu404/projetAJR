@@ -1,4 +1,4 @@
-package emkyu;
+package logProg;
 
 import java.io.*;
 import java.net.*;
