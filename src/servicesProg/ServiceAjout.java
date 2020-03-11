@@ -46,7 +46,7 @@ public class ServiceAjout implements Service {
 		
 	}
 
-	try {client.close();} catch (IOException e2) {}
+	//try {client.close();} catch (IOException e2) {}
 		
 	}
 
