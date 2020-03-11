@@ -75,18 +75,21 @@ class ClientProg {
 			String line;
 			sout.println(login);
 		// menu et choix du service
-			line = sin.readLine();
-			System.out.println(line.replaceAll("##", "\n"));
-		// saisie/envoie du choix
-			sout.println(clavier2.readLine());
+			while(true) {
+				line = sin.readLine();
+				System.out.println(line.replaceAll("##", "\n"));
 			
-		// réception/affichage de la question
-			line = sin.readLine();
-			System.out.println(line.replaceAll("##", "\n"));
-		// saisie clavier/envoie au service de la réponse
-			sout.println(clavier2.readLine());
-		// réception/affichage de la réponse
-			System.out.println(sin.readLine());
+			// saisie/envoie du choix
+				sout.println(clavier2.readLine());
+				
+			// réception/affichage de la question
+				line = sin.readLine();
+				System.out.println(line.replaceAll("##", "\n"));
+			// saisie clavier/envoie au service de la réponse
+				sout.println(clavier2.readLine());
+			// réception/affichage de la réponse
+				System.out.println(sin.readLine());
+			}
 				
 		}
 		catch (IOException e) { System.err.println("Fin de la connexion"); }

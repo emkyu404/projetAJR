@@ -16,9 +16,9 @@ public class ServiceAjout implements Service {
 	private Socket client;
 	private String log;
 	
-	public ServiceAjout(Socket socket, String progLogin) {
+	public ServiceAjout(Socket socket) {
 		client = socket;
-		log = progLogin;
+		log = "logProg";
 	}
 	
 	@Override

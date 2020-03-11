@@ -35,7 +35,7 @@ public class ServiceRegistry {
 	
 		int modifier = newService.getModifiers();
 		Class<?>[] interfaces = newService.getInterfaces();
-		if(checkServPackage(loginProg, newService.getPackageName()))
+		//if(checkServPackage(loginProg, newService.getPackageName()))
 		
 		if(!checkInterface(interfaces)) throw new AddServiceException("Le service n'implemente pas la classe ServiceBRi");
 		
