@@ -34,7 +34,7 @@ public class BRiLaunch {
 		new Thread(new ServeurBRi(PORT_PROG)).start();
 		}catch(Exception e) {
 			System.out.println("*************************************************************************");
-			System.out.println("Serveur déjà lancé");
+			System.err.println("Serveur déjà lancé");
 		}
 		
 	}

@@ -14,7 +14,7 @@ import bri.ServiceRegistry;
 public class ServiceDésinstaller implements Service {
 	private Socket client;
 	
-	public ServiceDésinstaller(Socket socket) {
+	public ServiceDésinstaller(Socket socket, String log) {
 		client = socket;
 	}
 	
@@ -22,21 +22,23 @@ public class ServiceDésinstaller implements Service {
 	public void run()  {
 		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 		PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
-		out.println(ServiceRegistry.toStringueStopped()+"##Indiquez le numéro du service à désinstaller");
+		out.println(ServiceRegistry.toStringueStopped()+"##Indiquez le numéro du service à désinstaller  (0 pour annuler)");
 			try {
-				int serviceNumber = Integer.parseInt(in.readLine());
-				Class<?> newService = ServiceRegistry.getServiceStoppedClass(serviceNumber);
-				String classeName = newService.getSimpleName();					
-				ServiceRegistry.removeService(newService);
-				out.println("Service '"+classeName+"' a été désinstaller avec succès");
+				int numService = Integer.parseInt(in.readLine());
+				if(numService == 0) {
+					out.println("Annulation du service de désintallation. Retour à la sélection de service ##*************************************************************************##");
+				}else {
+					Class<?> newService = ServiceRegistry.getServiceStoppedClass(numService);
+					String classeName = newService.getSimpleName();					
+					ServiceRegistry.removeService(newService);
+					out.println("Service '"+classeName+"' a été désinstaller avec succès ##*************************************************************************##");
+				}
 			} catch (Exception e) {
 				out.println("Erreur : Le service indiqué n'existe pas. Vérifiez que le numero indiqué ne comporte aucune erreur.");
 			}
 		} catch (IOException e) {
 		//Fin du service
 		}
-
-	try {client.close();} catch (IOException e2) {}
 		
 	}
 

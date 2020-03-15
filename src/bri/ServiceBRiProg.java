@@ -19,42 +19,50 @@ class ServiceBRiProg implements Runnable {
 		try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 			PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
 			log = in.readLine();	
-			while(true) {
-				out.println(ServiceRegistry.toStringueProg()+"##********************************************************************##"+log+", Tapez le numéro de service désiré :");	
-				int choix = Integer.parseInt(in.readLine());
-				
-				// instancier le service numéro "choix" en lui passant la socket "client"
-				// invoquer run() pour cette instance ou la lancer dans un thread à part 
+			boolean active = true;
+			while(active) {
+				out.println("##" +ServiceRegistry.toStringueProg()+"##------------------------------------------------------------------------##"+log+", Tapez le numéro de service désiré (0 pour se déconnecter) :");
 				try {
-					((Service) ServiceRegistry.getServicesClassesProg(choix).getConstructor(Socket.class).newInstance(client)).run();
-					//Class<?> serviceClass = ServiceRegistry.getServicesClassesProg(choix);
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					int choix = Integer.parseInt(in.readLine());
+					if(choix == 0) {
+						active = false;
+						out.println("Déconnexion de l'utilisateur " + log + ". A bientôt !");
+					} else {
 					
-				}
-			}
-		catch (IOException e) {
-			//Fin du service
+						// instancier le service numéro "choix" en lui passant la socket "client"
+						// invoquer run() pour cette instance ou la lancer dans un thread à part 
+						try {
+							((Service) ServiceRegistry.getServicesClassesProg(choix).getConstructor(Socket.class, String.class).newInstance(client, log)).run();
+						} catch (InstantiationException e) {
+							// TODO Auto-generated catch block
+							
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							
+						} catch (IllegalArgumentException e) {
+							// TODO Auto-generated catch block
+							
+						} catch (InvocationTargetException e) {
+							// TODO Auto-generated catch block
+							
+						} catch (NoSuchMethodException e) {
+							// TODO Auto-generated catch block
+							
+						} catch (SecurityException e) {
+							// TODO Auto-generated catch block
+							
+						}
+					}
+				}catch(Exception e) {
+					
+				}	
 		}
+	} catch (IOException e) {
+			//Fin du service
+	}
 
 		try {client.close();} catch (IOException e2) {}
+	
 	}
 	
 	protected void finalize() throws Throwable {

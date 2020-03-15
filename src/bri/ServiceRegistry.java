@@ -19,6 +19,9 @@ public class ServiceRegistry {
 		servicesAmaClassesStarted = new Vector<Class<?>>();
 		servicesAmaClassesStopped = new Vector<Class<?>>();
 		servicesProgClasses = new Vector<Class<?>>(); 
+		
+		serverFTPURLClass = "ftp://localhost:2121/tp4/classes/";
+		serverFTPURLLib = "ftp://localhost:2121/tp4/lib/";
 		try{
 			initializeProgServices();
 		}catch(Exception e) {
@@ -26,16 +29,28 @@ public class ServiceRegistry {
 		}
 	}
 	
-	private static String serverFTPURL;
+	private static String serverFTPURLClass;
+	private static String serverFTPURLLib;
 	private static List<Class<?>> servicesAmaClassesStarted;
 	private static List<Class<?>> servicesAmaClassesStopped;
 	private static List<Class<?>> servicesProgClasses;
-// ajoute une classe de service après contrôle de la norme BLTi
+	
+	/* permet de récupérer l'adresse du serveurFTP */
+	public static String getServerFTPURLClass() {
+		return serverFTPURLClass;
+	}
+	/* permet de récupererl 'adresse du serveur FTP */
+	public static String getServerFTPURLLib() {
+		return serverFTPURLLib;
+	}
+	
+	
+	// ajoute une classe de service après contrôle de la norme BLTi
 	public static void addService(Class<?> newService, String loginProg) throws AddServiceException {
 	
 		int modifier = newService.getModifiers();
 		Class<?>[] interfaces = newService.getInterfaces();
-		//if(checkServPackage(loginProg, newService.getPackageName()))
+		if(!checkServPackage(loginProg, newService.getPackageName())) throw new AddServiceException("Le service que vous souhaitez implémenté ne vous appartient pas");
 		
 		if(!checkInterface(interfaces)) throw new AddServiceException("Le service n'implemente pas la classe ServiceBRi");
 		
@@ -49,7 +64,27 @@ public class ServiceRegistry {
 		
 		if(!hasToString(newService)) throw new AddServiceException("Le service n'a pas de méthode 'public static String ToStringue()'");
 		
+		/* recherche dans la liste des classes de services arrêtés si le service existe déjà */
+		for(Class<?> service : servicesAmaClassesStopped) {
+			if(service.getSimpleName().equals(newService.getSimpleName())){
+				throw new AddServiceException("Le service que vous cherchez à implémenter existe déjà. Utiliser la fonctionnalité de mise à jour.");
+			}
+		}
+		
+		/* recherche dans la liste des classes de services déployés si le service existe déjà */
+		for(Class<?> service : servicesAmaClassesStarted) {
+			if(service.getSimpleName().equals(newService.getSimpleName())){
+				throw new AddServiceException("Le service que vous cherchez à implémenter existe déjà. Utiliser la fonctionnalité de mise à jour.");
+			}
+		}
 		servicesAmaClassesStarted.add(newService);
+	}
+	
+	
+	//changement de l'adresse du serveur
+	public static void changeFTPServer(String urlClass, String urlLib) {
+		serverFTPURLClass = urlClass;
+		serverFTPURLLib = urlLib;
 	}
 	
 	
@@ -180,7 +215,7 @@ public class ServiceRegistry {
 	private static void initializeProgServices() throws Exception {
 		servicesProgClasses.add(Class.forName("servicesProg.ServiceAjout"));
 		servicesProgClasses.add(Class.forName("servicesProg.ServiceArrêt"));
-		//servicesProg.add(Class.forName("servicesProg.ServiceChangementServeurFTP"));
+		servicesProgClasses.add(Class.forName("servicesProg.ServiceChangementServeurFTP"));
 		servicesProgClasses.add(Class.forName("servicesProg.ServiceDémarrer"));
 		servicesProgClasses.add(Class.forName("servicesProg.ServiceDésinstaller"));
 		servicesProgClasses.add(Class.forName("servicesProg.ServiceMiseAJour"));

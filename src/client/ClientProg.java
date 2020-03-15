@@ -77,18 +77,19 @@ class ClientProg {
 		// menu et choix du service
 			while(true) {
 				line = sin.readLine();
-				System.out.println(line.replaceAll("##", "\n"));
+				System.out.println(line.replaceAll("##", "\n")); //Choix du service
 			
 			// saisie/envoie du choix
 				sout.println(clavier2.readLine());
 				
 			// réception/affichage de la question
 				line = sin.readLine();
-				System.out.println(line.replaceAll("##", "\n"));
+				System.out.println(line.replaceAll("##", "\n")); // affichage du service en question
 			// saisie clavier/envoie au service de la réponse
-				sout.println(clavier2.readLine());
+				sout.println(clavier2.readLine()); // réponse au service
 			// réception/affichage de la réponse
-				System.out.println(sin.readLine());
+				line=sin.readLine();
+				System.out.println(line.replaceAll("##", "\n"));
 			}
 				
 		}

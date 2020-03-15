@@ -14,39 +14,43 @@ import bri.ServiceRegistry;
 public class ServiceAjout implements Service {
 
 	private Socket client;
-	private String log;
+	private String login;
 	
-	public ServiceAjout(Socket socket) {
+	public ServiceAjout(Socket socket, String log) {
 		client = socket;
-		log = "logProg";
+		login = log;
 	}
 	
 	@Override
 	public void run()  {
 	
 		try {
-		URL[] tabURL = {new URL("ftp://localhost:2121/tp4/classes/"), new URL("ftp://localhost:2121/tp4/lib/")};
+		URL[] tabURL = {new URL(ServiceRegistry.getServerFTPURLClass()), new URL(ServiceRegistry.getServerFTPURLClass())};
+		//URL[] tabURL = {new URL("ftp://localhost:2121/tp4/classes/"), new URL("ftp://localhost:2121/tp4/lib/")};
 		URLClassLoader urlcl = new URLClassLoader(tabURL);
 		
 			try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 			PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
-			out.println(ServiceRegistry.toStringue()+"##Indiquez le nom du service à ajouter");
+			out.println(ServiceRegistry.toStringue()+"##Indiquez le nom du service à ajouter  (0 pour annuler)");
 				try {
 					String classeName = in.readLine();
-					Class<?> newService = urlcl.loadClass(classeName);
-					ServiceRegistry.addService(newService, log);
-					out.println("Service '"+classeName+"' a été ajouté avec succès");
+					if(classeName.equals("0")) {
+						out.println("Annulation du démarrage. Retour à la sélection de service ##*************************************************************************##");
+					}else {
+						Class<?> newService = urlcl.loadClass(login + "." + classeName);
+						ServiceRegistry.addService(newService, login);
+						out.println("Service '"+classeName+"' a été ajouté avec succès ##*************************************************************************##");
+					}
 				} catch (Exception e) {
-					out.println("Erreur : Le service indiqué n'existe pas. Vérifiez que le nom ne comporte aucune erreur.");
+					out.println("Erreur : " + e.toString());
 				}
 			} catch (IOException e) {
-			//Fin du service
+				PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
+				out.println("Erreur : " + e.getMessage());
 			}
 		} catch(Exception e) {
 		
 	}
-
-	//try {client.close();} catch (IOException e2) {}
 		
 	}
 
