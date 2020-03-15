@@ -1,4 +1,4 @@
-package services;
+package logProg;
 
 import java.util.Properties;
 import javax.mail.Message;

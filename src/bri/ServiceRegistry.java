@@ -83,7 +83,7 @@ public class ServiceRegistry {
 		if(!hasSocketAttr(newService)) throw new AddServiceException("Le service n'a pas de Socket en attribut");
 		
 		/* recherche si le service a une méthode toString */
-		if(!hasToString(newService)) throw new AddServiceException("Le service n'a pas de méthode 'public static String ToStringue()'");
+		if(!hasToString(newService)) throw new AddServiceException("Le service n'a pas de méthode 'public static String toStringue()'");
 		
 		/* recherche dans la liste des classes de services arrêtés si le service existe déjà */
 		for(Class<?> service : servicesAmaClassesStopped) {

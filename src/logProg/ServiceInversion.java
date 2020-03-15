@@ -1,4 +1,4 @@
-package services;
+package logProg;
 
 import java.io.*;
 import java.net.*;

@@ -1,10 +1,12 @@
-package services;
+package logProg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Scanner;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,6 +18,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import bri.Service;
+import bri.ServiceRegistry;
 
 public class ServiceAnalyseXML implements Service{
 	
@@ -70,38 +73,7 @@ public class ServiceAnalyseXML implements Service{
 		}
 	}
 	
-	//Le main est là pour tester sans passer par tout le processus d'ajout de service etc
-	/*public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
-		validerXML("test.xml");
-		//Messagerie mail = new Messagerie("anthonyjoaquim40@gmail.com","Anthonio123");
-		//mail.envoyerMail("salut");
+	public static String toStringue() {
+		return "Analyse de fichier XML";
 	}
-	
-	public static void validerXML(String fichierXML) throws SAXException, IOException, ParserConfigurationException {
-		
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		factory.setNamespaceAware(true);
-		
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		
-		//PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
-		//out.println("Tapez un texte à inverser");
-		Scanner clavier = new Scanner(System.in);
-		System.out.println("Il faut vous connecter à votre mail pour recevoir le rapport");
-		System.out.println("Seul gmail fonctionne");
-		System.out.println("Pensez à activer l'option qui permet de recevoir des mails d'application moins sécurisées");
-		System.out.println("Quel est votre mail ?");
-		
-		String mail = clavier.nextLine();
-		
-		System.out.println("Quel est votre mdp gmail ?");
-		
-		String mdp = clavier.nextLine();
-		Messagerie mailUser = new Messagerie(mail,mdp);
-		
-		builder.setErrorHandler(new SimpleErrorHandler(mailUser));
-		
-		Document document = builder.parse(new InputSource("ftp://localhost:2121/fichierXML/test.xml"));
-	}*/
 }
