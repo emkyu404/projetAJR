@@ -21,7 +21,7 @@ public class Messagerie {
 	}
 	
 	//Fonctionne seulement avec gmail
-	public void envoyerMail() {
+	public void envoyerMail(String contenuMail) {
 		
 		//On crée la session
 		Properties proprietes = new Properties();
@@ -48,7 +48,7 @@ public class Messagerie {
 		message.setSubject("Compte rendu analyse du fichier XML");
 		
 		// /!\ Mettre dedans le contenu de l'analyse du fichier /!\
-		message.setText(null);
+		message.setText(contenuMail);
 		
 		
 		//On envoie le message
