@@ -11,6 +11,10 @@ import java.net.URLClassLoader;
 import bri.Service;
 import bri.ServiceRegistry;
 
+/**
+ * @author Bui Minh-Quân & Anthony Reino 
+ * Service de changement d'adresse du serveurFTP, utilisé par les programmeurs uniquement
+ */
 public class ServiceChangementServeurFTP implements Service {
 	private Socket client;
 	

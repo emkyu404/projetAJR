@@ -11,6 +11,10 @@ import java.net.URLClassLoader;
 import bri.Service;
 import bri.ServiceRegistry;
 
+/**
+ * @author Bui Minh-Quân & Anthony Reino 
+ * Service de mise à jour d'un service installé en attente de déploiement, utilisé par les programmeurs uniquement
+ */
 public class ServiceMiseAJour implements Service {
 	
 	private Socket client;

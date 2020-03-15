@@ -11,6 +11,10 @@ import java.net.URLClassLoader;
 import bri.Service;
 import bri.ServiceRegistry;
 
+/**
+ * @author Bui Minh-Quân & Anthony Reino 
+ * Service d'ajout ou d'installation d'un service amateur, utilisé par les programmeurs uniquement
+ */
 public class ServiceAjout implements Service {
 
 	private Socket client;
@@ -25,12 +29,13 @@ public class ServiceAjout implements Service {
 	public void run()  {
 	
 		try {
+			/* on récupère le chemin vers le serveur FTP */
 		URL[] tabURL = {new URL(ServiceRegistry.getServerFTPURLClass()), new URL(ServiceRegistry.getServerFTPURLClass())};
-		//URL[] tabURL = {new URL("ftp://localhost:2121/tp4/classes/"), new URL("ftp://localhost:2121/tp4/lib/")};
 		URLClassLoader urlcl = new URLClassLoader(tabURL);
 		
 			try {BufferedReader in = new BufferedReader (new InputStreamReader(client.getInputStream ( )));
 			PrintWriter out = new PrintWriter (client.getOutputStream ( ), true);
+			/* on demande au client progrmameur d'indiqué le nom du service, si c'est 0 on annule l'ajout d'un nouveau service */
 			out.println(ServiceRegistry.toStringue()+"##Indiquez le nom du service à ajouter  (0 pour annuler)");
 				try {
 					String classeName = in.readLine();

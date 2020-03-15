@@ -9,6 +9,10 @@ import java.net.Socket;
 import bri.Service;
 import bri.ServiceRegistry;
 
+/**
+ * @author Bui Minh-Quân & Anthony Reino 
+ * Service de démarrage d'un service amateur, utilisé par les programmeurs uniquement
+ */
 public class ServiceDémarrer implements Service {
 	
 	private Socket client;

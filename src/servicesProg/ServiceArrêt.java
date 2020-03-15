@@ -11,6 +11,10 @@ import java.net.URLClassLoader;
 import bri.Service;
 import bri.ServiceRegistry;
 
+/**
+ * @author Bui Minh-Quân & Anthony Reino 
+ * Service d'arrêt d'un service amateur, utilisé par les programmeurs uniquement
+ */
 public class ServiceArrêt implements Service {
 	
 	private Socket client;
