@@ -38,7 +38,7 @@ public class ServiceMiseAJour implements Service {
 					} else {
 						Class<?> updatedService = urlcl.loadClass(login + "." + classeName);
 						classeName = updatedService.getSimpleName();
-						ServiceRegistry.updateService(updatedService);
+						ServiceRegistry.updateService(updatedService, login);
 						out.println("Service '"+classeName+"' a été mis à jour avec succès##*************************************************************************##");
 					}
 				} catch (Exception e) {

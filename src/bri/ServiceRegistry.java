@@ -102,12 +102,16 @@ public class ServiceRegistry {
 		servicesAmaClassesStarted.add(serviceToStart);
 	}
 	
-	public static void updateService(Class<?>updatedService) {
+	public static void updateService(Class<?>updatedService, String login) {
 		/* on recherche dans la liste des services arrêté, la class qui a le même nom que le service mis à jour */
 		for(Class<?> service : servicesAmaClassesStopped) {
 			if(service.getSimpleName().equals(updatedService.getSimpleName())){
 				servicesAmaClassesStopped.remove(service);
-				servicesAmaClassesStopped.add(updatedService);
+				try {
+					ServiceRegistry.addService(updatedService, login);
+				} catch (AddServiceException e) {
+					
+				}
 				return;
 			}
 		}
